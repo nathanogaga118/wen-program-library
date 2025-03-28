@@ -15,11 +15,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Run Solanaizer
-        uses: solanaizer/solanaizer-action@v1
-        with:
-          target: https://github.com/nathanogaga118/wen-program-library/tree/main/programs  # Set your contract directory
-          output: report.json
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y python3-pip
+          pip3 install solanaizer  # Ensure Solanaizer is a valid PyPi package
+
+      - name: Run Solanaizer Audit
+        run: |
+          solanaizer --scan ./programs --output report.json
           
       - name: Upload Audit Report
         uses: actions/upload-artifact@v3
